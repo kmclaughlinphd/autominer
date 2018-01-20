@@ -18,7 +18,7 @@ I will research ethash miners soon.
 
 
 To do:
-1) Allow comments in minecmd.csv; and provide some instructions of getting each coin/algo set up.
+1) Allow comments in minecmd.csv; and provide some instructions of getting each coin/algo set up. -- done
 2) Re-execute at predetermined intervals; so we're always mining the best coins/algos.
 3) Log everything.
 4) Some sort of fail-safe? Kill the miner if it's not connecting to the pool, or rejected, etc.
