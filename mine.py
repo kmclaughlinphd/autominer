@@ -132,8 +132,10 @@ def getScriptDict():
 
 
 def PrintAndLog(logfile, logstring):
+    logfile.write(logstring+'\n')
+    logfile.flush()
     print logstring
-    logfile.write(logstring)
+
 
 
 # since python 2 doesn't support subprocess timeout, we use this
