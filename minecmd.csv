@@ -1,8 +1,31 @@
+# Each line contains coin abbreviation, algo name, and command-line to call the miner
+# commented lines, and lines without exactly three comma-separated elements are ignored
+# if you spell a coin name or abbreviation incorrectly, it will probably be ignored
+# work with any command-line executable miner
+
+# I'm using tprovot ccminer222 (though I plan to test out version 2.2.4)
+# https://github.com/tpruvot/ccminer/releases
+# For equihash, ewbf gets better hashrates
+# https://github.com/nanopool/ewbf-miner/releases
+# I need to research EthHash miners so we can do MusicCoin and a couple others
+
+# I'm using coinomi for many of these coins, but some aren't yet supported (you can check Jaxx also)
+# you can find the other wallets at these links:
+# https://trezarcoin.com
+# https://gobyte.network
+# http://halcyon.top
+# ZCL instructions here (it's complicated): https://www.reddit.com/r/ZClassic/comments/7kynho/how_to_install_the_windows_zclassic_wallet_yes/
+
+# altminer.net requires no sign up; just put in your wallet addresses:
 TZC,NeoScrypt,".\ccminer222\ccminer-x64  -a neoscrypt -o stratum+tcp://eu1.altminer.net:4233                         -u TktjrGMzFPfH6uyAPztYSbffRzu3dGxkPE -p c=TZC  -d 0 --max-temp=72"
 VIVO,NeoScrypt,".\ccminer222\ccminer-x64 -a neoscrypt -o stratum+tcp://eu1.altminer.net:4233                         -u VUvmRDFhcGZ3WLZYZfujCXT6HWw1XzuYV5 -p c=VIVO -d 0 --max-temp=72"
 GBX,NeoScrypt,".\ccminer222\ccminer-x64  -a neoscrypt -o stratum+tcp://eu1.altminer.net:4233                         -u GUbnfErSYszVSTgKahBKspawSB4sMizghA -p c=GBX  -d 0 --max-temp=72"
 HAL,NeoScrypt,".\ccminer222\ccminer-x64  -a neoscrypt -o stratum+tcp://eu1.altminer.net:4233                         -u HHHCcDENKsPV4VcCK5jjPzBTtjq5UghRhy -p c=HAL  -d 0 --max-temp=72"
+
+# suprnova.cc requires an account for each coin you mine; make an account at xvg-lyra.suprnova.cc (kmclaughlin), then create a worker (becquerel) and worker password (poo)
 XVG,Lyra2REv2,".\ccminer222\ccminer-x64  -a lyra2v2   -o stratum+tcp://xvg-lyra.suprnova.cc:2595                     -u kmclaughlin.becquerel -p poo                 -d 0 --max-temp=72"
+
+# miningpoolhub.com requires only one account (kmclaughlin); then you just create a worker (becquerel). If I recall correctly, the password is always "x" for your worker.
 FTC,NeoScrypt,".\ccminer222\ccminer-x64  -a neoscrypt -o stratum+tcp://hub.miningpoolhub.com:20510                   -u kmclaughlin.becquerel -p x                   -d 0 --max-temp=72"
 VTC,Lyra2REv2,".\ccminer222\ccminer-x64  -a lyra2v2   -o stratum+tcp://us-east.lyra2z-hub.miningpoolhub.com:20507    -u kmclaughlin.becquerel -p x                   -d 0 --max-temp=72"
 MONA,Lyra2REv2,".\ccminer222\ccminer-x64 -a lyra2v2   -o stratum+tcp://us-east.lyra2z-hub.miningpoolhub.com:20593    -u kmclaughlin.becquerel -p x                   -d 0 --max-temp=72"

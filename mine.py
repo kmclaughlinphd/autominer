@@ -5,14 +5,14 @@
 # Copyright:   (c) kirrrbbbyPhD 2018
 #-------------------------------------------------------------------------------
 
-import urllib2
-import json
-import tempfile
-from enum import Enum
+import os, time
+import urllib2, json, tempfile
 import re
-import subprocess
 import csv
-import os
+from enum import Enum
+
+import subprocess, shlex
+from threading import Timer
 
 
 ## fill this shit in, cuckboi -- set to zero to disable an algo
@@ -69,6 +69,9 @@ class coin(object):
     def printCoin(self):
         print self.tag, self.algo.name, self.revenue
 
+    def strCoin(self):
+        return self.tag + ' ' + self.algo.name
+
 
 ## grab coin data from whattomine, return temp file handle
 def GetWTMJson():
@@ -119,13 +122,37 @@ def getScriptDict():
         reader = csv.reader(f)
         for row in reader:
             if len(row) == 3:
+                # skip commented lines
+                if row[0].strip()[0] == '#':
+                    continue
                 # add dictionary entry for this csv entry
                 scripts[row[0].lower()+row[1].lower()] = row[2]
 
     return scripts
 
 
-def main():
+def PrintAndLog(logfile, logstring):
+    print logstring
+    logfile.write(logstring)
+
+
+# since python 2 doesn't support subprocess timeout, we use this
+# stolen from  https://stackoverflow.com/questions/1191374/using-module-subprocess-with-timeout
+def run(cmd, timeout_sec):
+    # this will suppress output, which we don't want // added posix=False so it doesn't butcher backslashes
+    #proc = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    proc = subprocess.Popen(shlex.split(cmd, posix=False))
+    kill_proc = lambda p: p.kill()
+    timer = Timer(timeout_sec, kill_proc, [proc])
+    try:
+        timer.start()
+        stdout, stderr = proc.communicate()
+    finally:
+        timer.cancel()
+
+
+# figures out which coin we want to mine, and starts the miner
+def startMiner(logfile, timeout=600):
 
     # get Json
     tmpJson = GetWTMJson()
@@ -140,14 +167,25 @@ def main():
     mineScripts = getScriptDict()
 
     # try running scripts here
+
     for ii in xrange(20):
-        ranking[ii].printCoin()
         if ranking[ii].coinKey() in mineScripts:
+            PrintAndLog(logfile, time.strftime("%Y-%M-%d %H:%M:%S") + ": mining " + ranking[ii].strCoin())
             # remove extra whitespace from command line, then execute
             cmdline = " ".join(mineScripts[ranking[ii].coinKey()].split())
-            subprocess.call(cmdline, shell=True)
+            #subprocess.call(cmdline, shell=True, timeout=timeout)
+            run(cmdline, timeout)
             break
+        else:
+            PrintAndLog(logfile, time.strftime("%Y-%M-%d %H:%M:%S") + ": skipping " + ranking[ii].strCoin())
 
+
+def main():
+    timeout = 1200 #seconds
+    logfile = open('automine.log.' + time.strftime("%Y%M%d%H%M%S"), 'wb')
+    while True:
+        startMiner(logfile, timeout)
 
 if __name__ == '__main__':
     main()
+
