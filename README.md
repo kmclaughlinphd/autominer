@@ -22,7 +22,8 @@ To do:
 2) Re-execute at predetermined intervals; so we're always mining the best coins/algos. -- done
 3) Log everything. -- done
 4) Some sort of fail-safe? Kill the miner if it's not connecting to the pool, or rejected, etc.
-5) Move hashrates into separate file or get them from somewhere on-the-fly.
+5) Move hashrates into separate file or get them from somewhere on-the-fly. -- done
+6) Combine all input files and write a parser for them
 
 
 
