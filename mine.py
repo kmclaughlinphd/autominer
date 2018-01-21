@@ -29,6 +29,7 @@ class algoenum(Enum):
     Blake14r = 9
     Pascal = 10
     Skunkhash = 11
+    NIST5 = 12
 
 
 ## create a coin object that is used in the coin revenue ranking array
