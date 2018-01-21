@@ -47,7 +47,7 @@ class algoenum(Enum):
 
 ## create a coin object that is used in the coin revenue ranking array
 class coin(object):
-    def __init__(self, tag, algoname, baseRevenue):
+    def __init__(self, tag, algoname, baseRevenue, baseReward, baseReward24h):
         # convert to ascii
         self.tag = tag.encode('utf-8')
         algoname = algoname.encode('utf-8')
@@ -56,21 +56,40 @@ class coin(object):
         algoname = re.sub(r'\W+', '', algoname)
         self.algo = algoenum[algoname]
 
-        # get base revenue (normalized to 3x 480's)
-        self.baseRevenue = baseRevenue
+        # get base revenue (in btc) and rewards (normalized to 3x 480's)
+        self.__baseRevenue = baseRevenue
+        self.__baseReward = baseReward
+        self.__baseReward24h = baseReward24h
 
+        # compute these when calcRewards() is called
+        self.revenue = False
+        self.reward = False
+        self.reward24h = False
+
+    # used as dictionary key when comparing with available mining scripts
     def coinKey(self):
         return self.tag.lower() + self.algo.name.lower()
 
-    def calcRevenue(self):
+    # renormalize rewards/revenue
+    def calcRewards(self):
         # calculate the revenue based on entered hash rates
-        self.revenue = float(self.baseRevenue) * HashRates[self.algo.value]/RenormRates[self.algo.value]
+        hashRatio = HashRates[self.algo.value]/RenormRates[self.algo.value]
 
-    def printCoin(self):
-        print self.tag, self.algo.name, self.revenue
+        #btc revenue (per day)
+        self.revenue = float(self.__baseRevenue) * hashRatio
+        #reward per day (based on NOW rate)
+        self.reward = float(self.__baseReward) * hashRatio
+        # (based 24h average)
+        self.reward24h = float(self.__baseReward24h) * hashRatio
 
+    # used for logging
     def strCoin(self):
         return self.tag + ' ' + self.algo.name
+
+    # get reward for mining for *timeout* seconds
+    def actualReward(self, timeout):
+        return self.reward * timeout / float(24*60*60)
+
 
 
 ## grab coin data from whattomine, return temp file handle
@@ -101,11 +120,20 @@ def GetCoinRanking(inJson):
 
     # create a coin object for each key
     for c in coindata.keys():
+        # coin name
         cTag = coindata[c][u'tag']
+        # mining algorithm
         cAlgo = coindata[c][u'algorithm']
-        cReward = coindata[c][u'btc_revenue']
-        ranking.append(coin(cTag, cAlgo, cReward))
-        ranking[-1].calcRevenue()
+        # revenue in btc for "default" rig per 24h
+        cBtcRevenue = coindata[c][u'btc_revenue']
+        # reward for "default" rig per 24h based on current rate of return
+        cReward = coindata[c][u'estimated_rewards']
+        # reward based on 24h average
+        cReward24h = coindata[c][u'estimated_rewards24']
+
+        # create coin, append to array, and compute renormalized rewards/revenue
+        ranking.append(coin(cTag, cAlgo, cBtcRevenue, cReward, cReward24h))
+        ranking[-1].calcRewards()
 
     # sort based on revenue
     ranking.sort(key = lambda x: x.revenue, reverse = True)
@@ -135,7 +163,6 @@ def PrintAndLog(logfile, logstring):
     logfile.write(logstring+'\n')
     logfile.flush()
     print logstring
-
 
 
 # since python 2 doesn't support subprocess timeout, we use this
@@ -172,14 +199,18 @@ def startMiner(logfile, timeout=600):
 
     for ii in xrange(20):
         if ranking[ii].coinKey() in mineScripts:
-            PrintAndLog(logfile, time.strftime("%Y-%M-%d %H:%M:%S") + ": mining " + ranking[ii].strCoin())
+            PrintAndLog(logfile, time.strftime("%Y-%M-%d %H:%M:%S") \
+                + ": mining " + ranking[ii].strCoin() \
+                + "; est_reward: " + str(ranking[ii].actualReward(timeout)))
+
             # remove extra whitespace from command line, then execute
             cmdline = " ".join(mineScripts[ranking[ii].coinKey()].split())
             #subprocess.call(cmdline, shell=True, timeout=timeout)
             run(cmdline, timeout)
             break
         else:
-            PrintAndLog(logfile, time.strftime("%Y-%M-%d %H:%M:%S") + ": skipping " + ranking[ii].strCoin())
+            PrintAndLog(logfile, time.strftime("%Y-%M-%d %H:%M:%S") \
+                + ": skipping " + ranking[ii].strCoin())
 
 
 def main():
