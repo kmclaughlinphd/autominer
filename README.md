@@ -24,6 +24,7 @@ To do:
 4) Some sort of fail-safe? Kill the miner if it's not connecting to the pool, or rejected, etc.
 5) Move hashrates into separate file or get them from somewhere on-the-fly. -- done
 6) Combine all input files and write a parser for them
+7) Clean up old logs automatically
 
 
 
