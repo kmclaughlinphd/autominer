@@ -15,20 +15,6 @@ import subprocess, shlex
 from threading import Timer
 
 
-## fill this shit in, cuckboi -- set to zero to disable an algo
-#EthHash Groestl X11Gost CryptoN EquiHsh Lyra2v2 NeoScry LBRY___ Blake2b Blake14 Pascal_ SknkHsh
-HashRates = \
-[35.   , 58.   , 19.5  , 830.  , 685.  , 64000., 1400. , 460.  , 2800. , 4350. , 1700. , 47.5  ]
-#EtHash_ Groestl X11Gost CryptoN EquiHsh Lyra2v2 NeoScry LBRY___ Blake2b Blake14 Pascal_ SknkHsh
-
-
-## leave this one alone -- used for renormalization of the json file
-# LEAVE THIS THE FUCK ALONE LEAVE THIS THE FUCK ALONE LEAVE THIS THE FUCK ALONE
-RenormRates = \
-[84., 63.9, 20.1, 2190., 870., 14700., 1950., 315., 3450., 5910., 2100., 54.]
-# LEAVE THIS THE FUCK ALONE LEAVE THIS THE FUCK ALONE LEAVE THIS THE FUCK ALONE
-
-
 class algoenum(Enum):
     Ethash = 0
     Groestl = 1
@@ -71,9 +57,9 @@ class coin(object):
         return self.tag.lower() + self.algo.name.lower()
 
     # renormalize rewards/revenue
-    def calcRewards(self):
+    def calcRewards(self, hashrates, defaultrates):
         # calculate the revenue based on entered hash rates
-        hashRatio = HashRates[self.algo.value]/RenormRates[self.algo.value]
+        hashRatio = hashrates[self.algo.value]/defaultrates[self.algo.value]
 
         #btc revenue (per day)
         self.revenue = float(self.__baseRevenue) * hashRatio
@@ -107,9 +93,35 @@ def GetWTMJson():
     return tmp
 
 
+## read in hashrates and default rates from csv files;
+## used for renormalizing rewards
+def GetHashRates():
+
+    # get default hashrates from csv
+    with open('defaultrates.csv') as f_dr:
+        reader = csv.reader(f_dr)
+        for row in reader:
+            # skip commented lines
+            if row[0].strip()[0] == '#': continue
+            # read in hashrates
+            if len(row) == 12:
+                defaultrates = [ float(r) for r in row ]
+
+    # get our hashrates from csv
+    with open('hashrates.csv') as f_hr:
+        reader = csv.reader(f_hr)
+        for row in reader:
+            # skip commented lines
+            if row[0].strip()[0] == '#': continue
+            # read in hashrates
+            if len(row) == 12:
+                hashrates = [ float(r) for r in row ]
+
+    return hashrates, defaultrates
+
 
 ## parse json and return ranked coin list
-def GetCoinRanking(inJson):
+def GetCoinRanking(inJson, hashrates, defaultrates):
 
     # will populate this array with coins
     ranking = []
@@ -133,7 +145,7 @@ def GetCoinRanking(inJson):
 
         # create coin, append to array, and compute renormalized rewards/revenue
         ranking.append(coin(cTag, cAlgo, cBtcRevenue, cReward, cReward24h))
-        ranking[-1].calcRewards()
+        ranking[-1].calcRewards(hashrates, defaultrates)
 
     # sort based on revenue
     ranking.sort(key = lambda x: x.revenue, reverse = True)
@@ -186,8 +198,11 @@ def startMiner(logfile, timeout=600):
     # get Json
     tmpJson = GetWTMJson()
 
+    # get hashrates from files
+    hashrates, defaultrates = GetHashRates()
+
     # parse it and rank coins based on revenue
-    ranking = GetCoinRanking(tmpJson)
+    ranking = GetCoinRanking(tmpJson, hashrates, defaultrates)
 
     # remove temp file
     os.remove(tmpJson.name)

@@ -1,0 +1,3 @@
+## replace values with your hashrates -- set to zero to disable an algo
+#EthHash Groestl X11Gost CryptoN EquiHsh Lyra2v2 NeoScry LBRY___ Blake2b Blake14 Pascal_ SknkHsh
+35.   , 58.   , 19.5  , 830.  , 685.  , 64000., 1400. , 460.  , 2800. , 4350. , 1700. , 47.5
