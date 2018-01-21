@@ -10,10 +10,10 @@ import urllib2, json, tempfile
 import re
 import csv
 from enum import Enum
+import sys, traceback
 
 import subprocess, shlex
 from threading import Timer
-
 
 class algoenum(Enum):
     Ethash = 0
@@ -31,6 +31,15 @@ class algoenum(Enum):
     Skunkhash = 11
     NIST5 = 12
 
+    DEFAULT = 99
+
+def myEnum(strArg):
+    try:
+        return algoenum[strArg]
+    except:
+        print "warning: algo " + strArg + " not supported."
+        return algoenum['DEFAULT']
+
 
 ## create a coin object that is used in the coin revenue ranking array
 class coin(object):
@@ -41,7 +50,8 @@ class coin(object):
 
         # get rid of non-alphanumerics in the algo name, and assign enum
         algoname = re.sub(r'\W+', '', algoname)
-        self.algo = algoenum[algoname]
+        #self.algo = algoenum[algoname]
+        self.algo = myEnum(algoname)
 
         # get base revenue (in btc) and rewards (normalized to 3x 480's)
         self.__baseRevenue = baseRevenue
@@ -60,7 +70,10 @@ class coin(object):
     # renormalize rewards/revenue
     def calcRewards(self, hashrates, defaultrates):
         # calculate the revenue based on entered hash rates
-        hashRatio = hashrates[self.algo.value]/defaultrates[self.algo.value]
+        if self.algo == self.algo.DEFAULT:
+            hashRatio = 0.0 #just don't mine if the algo hashrate isn't known
+        else:
+            hashRatio = hashrates[self.algo.value]/defaultrates[self.algo.value]
 
         #btc revenue (per day)
         self.revenue = float(self.__baseRevenue) * hashRatio
@@ -105,7 +118,7 @@ def GetHashRates():
             # skip commented lines
             if row[0].strip()[0] == '#': continue
             # read in hashrates
-            if len(row) == 12:
+            if len(row) == 13:
                 defaultrates = [ float(r) for r in row ]
 
     # get our hashrates from csv
@@ -115,7 +128,7 @@ def GetHashRates():
             # skip commented lines
             if row[0].strip()[0] == '#': continue
             # read in hashrates
-            if len(row) == 12:
+            if len(row) == 13:
                 hashrates = [ float(r) for r in row ]
 
     return hashrates, defaultrates
@@ -181,6 +194,7 @@ def PrintAndLog(logfile, logstring):
 # since python 2 doesn't support subprocess timeout, we use this
 # stolen from  https://stackoverflow.com/questions/1191374/using-module-subprocess-with-timeout
 def run(cmd, timeout_sec):
+
     # this will suppress output, which we don't want // added posix=False so it doesn't butcher backslashes
     #proc = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     proc = subprocess.Popen(shlex.split(cmd, posix=False))
@@ -236,5 +250,11 @@ def main():
         startMiner(logfile, timeout)
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except:
+        print sys.exc_info()[0]
+        print traceback.format_exc()
+        print "Press Enter to continue ..."
+        raw_input()
 
