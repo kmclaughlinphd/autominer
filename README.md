@@ -33,4 +33,4 @@ Maintained by kirrrbbby <(''<) ^('')^ (>'')>
 BTC (lol) 1JrpBozDCm4TUsJfQD1hvtZ2rEhK1bEV9p  
 BCH 1LyCM4x97rqmZRSRMTREvgbB3mYhMQvQeK  
 LTC LMFmNiMhwqZBEv7Ja4ggZnRuBjuptjdxg4  
-ETH 0xe8c40e39c5b36ca44c4c058fc4aec0a931d4d427
+ETH 0xe9137e79ba464ae80ef96c9f56cc4c3317ea53f2
