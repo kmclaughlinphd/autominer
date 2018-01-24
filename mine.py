@@ -197,7 +197,7 @@ def run(cmd, timeout_sec):
 
     # this will suppress output, which we don't want // added posix=False so it doesn't butcher backslashes
     #proc = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    proc = subprocess.Popen(shlex.split(cmd, posix=False))
+    proc = subprocess.Popen(shlex.split(cmd.strip(), posix=False))
     kill_proc = lambda p: p.kill()
     timer = Timer(timeout_sec, kill_proc, [proc])
     try:
@@ -229,7 +229,7 @@ def startMiner(logfile, timeout=600):
 
     for ii in xrange(20):
         if ranking[ii].coinKey() in mineScripts:
-            PrintAndLog(logfile, time.strftime("%Y-%M-%d %H:%M:%S") \
+            PrintAndLog(logfile, time.strftime("%Y-%m-%d %H:%M:%S") \
                 + ": mining " + ranking[ii].strCoin() \
                 + "; est_reward: " + str(ranking[ii].actualReward(timeout)))
 
@@ -239,13 +239,13 @@ def startMiner(logfile, timeout=600):
             run(cmdline, timeout)
             break
         else:
-            PrintAndLog(logfile, time.strftime("%Y-%M-%d %H:%M:%S") \
+            PrintAndLog(logfile, time.strftime("%Y-%m-%d %H:%M:%S") \
                 + ": skipping " + ranking[ii].strCoin())
 
 
 def main():
-    timeout = 1200 #seconds
-    logfile = open('automine.log.' + time.strftime("%Y%M%d%H%M%S"), 'wb')
+    timeout = 3600 #seconds
+    logfile = open('automine.log', 'ab')
     while True:
         startMiner(logfile, timeout)
 
