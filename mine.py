@@ -5,7 +5,7 @@
 # Copyright:   (c) kirrrbbbyPhD 2018
 #-------------------------------------------------------------------------------
 
-import os, time
+import os, time, sys
 import urllib2, json, tempfile
 import re
 import csv
@@ -43,7 +43,7 @@ def myEnum(strArg):
 
 ## create a coin object that is used in the coin revenue ranking array
 class coin(object):
-    def __init__(self, tag, algoname, baseRevenue, baseReward, baseReward24h):
+    def __init__(self, tag, algoname, baseRevenue, baseRevenue24h, baseReward, baseReward24h):
         # convert to ascii
         self.tag = tag.encode('utf-8')
         algoname = algoname.encode('utf-8')
@@ -55,6 +55,7 @@ class coin(object):
 
         # get base revenue (in btc) and rewards (normalized to 3x 480's)
         self.__baseRevenue = baseRevenue
+        self.__baseRevenue24h = baseRevenue24h
         self.__baseReward = baseReward
         self.__baseReward24h = baseReward24h
 
@@ -75,12 +76,20 @@ class coin(object):
         else:
             hashRatio = hashrates[self.algo.value]/defaultrates[self.algo.value]
 
+        # I had to make some decisions on how we should calculate the expected
+        # revenue (in btc) and reward (mined ccy). Two issues are observed in the
+        # WTM data. 1) if a ccy spikes in price, then the 24h average is inflated
+        # 2) lyra2rev2 revenues are noisy, so we wind up mining it at "fake" peaks.
+        # I think taking the min of the two values should deal with these two
+        # issues while not often penalizing us.
+
         #btc revenue (per day)
-        self.revenue = float(self.__baseRevenue) * hashRatio
+        self.revenue = hashRatio * \
+            min(float(self.__baseRevenue),float(self.__baseRevenue24h))
+
         #reward per day (based on NOW rate)
-        self.reward = float(self.__baseReward) * hashRatio
-        # (based 24h average)
-        self.reward24h = float(self.__baseReward24h) * hashRatio
+        self.reward = hashRatio * \
+            min(float(self.__baseReward),float(self.__baseReward24h))
 
     # used for logging
     def strCoin(self):
@@ -150,15 +159,18 @@ def GetCoinRanking(inJson, hashrates, defaultrates):
         cTag = coindata[c][u'tag']
         # mining algorithm
         cAlgo = coindata[c][u'algorithm']
-        # revenue in btc for "default" rig per 24h
+        # current revenue in btc for "default" rig per 24h
         cBtcRevenue = coindata[c][u'btc_revenue']
+        # 24h avg revenue in btc for "default" rig per 24h
+        cBtcRevenue24h = coindata[c][u'btc_revenue24']
+
         # reward for "default" rig per 24h based on current rate of return
         cReward = coindata[c][u'estimated_rewards']
         # reward based on 24h average
         cReward24h = coindata[c][u'estimated_rewards24']
 
         # create coin, append to array, and compute renormalized rewards/revenue
-        ranking.append(coin(cTag, cAlgo, cBtcRevenue, cReward, cReward24h))
+        ranking.append(coin(cTag, cAlgo, cBtcRevenue, cBtcRevenue24h, cReward, cReward24h))
         ranking[-1].calcRewards(hashrates, defaultrates)
 
     # sort based on revenue
@@ -206,6 +218,8 @@ def run(cmd, timeout_sec):
     finally:
         timer.cancel()
 
+def fmtTime():
+    return time.strftime("%Y-%m-%d %H:%M:%S")
 
 # figures out which coin we want to mine, and starts the miner
 def startMiner(logfile, timeout=600):
@@ -229,7 +243,7 @@ def startMiner(logfile, timeout=600):
 
     for ii in xrange(20):
         if ranking[ii].coinKey() in mineScripts:
-            PrintAndLog(logfile, time.strftime("%Y-%m-%d %H:%M:%S") \
+            PrintAndLog(logfile, fmtTime() \
                 + ": mining " + ranking[ii].strCoin() \
                 + "; est_reward: " + str(ranking[ii].actualReward(timeout)))
 
@@ -239,13 +253,18 @@ def startMiner(logfile, timeout=600):
             run(cmdline, timeout)
             break
         else:
-            PrintAndLog(logfile, time.strftime("%Y-%m-%d %H:%M:%S") \
-                + ": skipping " + ranking[ii].strCoin())
+            PrintAndLog(logfile, fmtTime() + ": skipping " + ranking[ii].strCoin())
 
 
 def main():
-    timeout = 3600 #seconds
+    # try to read optional timeout value from command line
+    try:
+        timeout = int(sys.argv[1])
+    except:
+        timeout = 1800 #seconds
+
     logfile = open('automine.log', 'ab')
+    PrintAndLog(logfile, fmtTime() + ": starting autominer w/ " + str(timeout) + "s looptime.")
     while True:
         startMiner(logfile, timeout)
 
@@ -255,6 +274,7 @@ if __name__ == '__main__':
     except:
         print sys.exc_info()[0]
         print traceback.format_exc()
+
         print "Press Enter to continue ..."
         raw_input()
 

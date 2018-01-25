@@ -22,24 +22,28 @@
 # ZCL instructions here (it's complicated): https://www.reddit.com/r/ZClassic/comments/7kynho/how_to_install_the_windows_zclassic_wallet_yes/
 
 # altminer.net requires no sign up; just put in your wallet addresses:
-TZC,NeoScrypt,".\ccminer224\ccminer-x64  -a neoscrypt -o stratum+tcp://eu1.altminer.net:4233                         -u TktjrGMzFPfH6uyAPztYSbffRzu3dGxkPE -p c=TZC  -d 0 --max-temp=72"
-VIVO,NeoScrypt,".\ccminer224\ccminer-x64 -a neoscrypt -o stratum+tcp://eu1.altminer.net:4233                         -u VUvmRDFhcGZ3WLZYZfujCXT6HWw1XzuYV5 -p c=VIVO -d 0 --max-temp=72"
-GBX,NeoScrypt,".\ccminer224\ccminer-x64  -a neoscrypt -o stratum+tcp://eu1.altminer.net:4233                         -u GU6dHWtSLtEEZEznYY4XmfeXDigt87JyZs -p c=GBX  -d 0 --max-temp=72"
-HAL,NeoScrypt,".\ccminer224\ccminer-x64  -a neoscrypt -o stratum+tcp://eu1.altminer.net:4233                         -u HHHCcDENKsPV4VcCK5jjPzBTtjq5UghRhy -p c=HAL  -d 0 --max-temp=72"
-CRC,NeoScrypt,".\ccminer224\ccminer-x64  -a neoscrypt -o stratum+tcp://eu1.altminer.net:4233                         -u Cc1xJeTwJpMe31j6F8sqdTqTJDqbfZdf2v -p c=CRC  -d 0 --max-temp=72"
+TZC,NeoScrypt,"   .\ccminer224\ccminer-x64 -a neoscrypt -o stratum+tcp://eu1.altminer.net:4233                         -u TktjrGMzFPfH6uyAPztYSbffRzu3dGxkPE -p c=TZC    -d 0 --max-temp=72"
+VIVO,NeoScrypt,"  .\ccminer224\ccminer-x64 -a neoscrypt -o stratum+tcp://eu1.altminer.net:4233                         -u VUvmRDFhcGZ3WLZYZfujCXT6HWw1XzuYV5 -p c=VIVO   -d 0 --max-temp=72"
+GBX,NeoScrypt,"   .\ccminer224\ccminer-x64 -a neoscrypt -o stratum+tcp://eu1.altminer.net:4233                         -u GU6dHWtSLtEEZEznYY4XmfeXDigt87JyZs -p c=GBX    -d 0 --max-temp=72"
+HAL,NeoScrypt,"   .\ccminer224\ccminer-x64 -a neoscrypt -o stratum+tcp://eu1.altminer.net:4233                         -u HHHCcDENKsPV4VcCK5jjPzBTtjq5UghRhy -p c=HAL    -d 0 --max-temp=72"
+# payouts much lower than anticipated for CRC -> going to run some more tests
+CRC,NeoScrypt,"   .\ccminer224\ccminer-x64 -a neoscrypt -o stratum+tcp://eu1.altminer.net:4233                         -u Cc1xJeTwJpMe31j6F8sqdTqTJDqbfZdf2v -p c=CRC    -d 0 --max-temp=72"
+ALTCOM,Skunkhash,".\ccminer224\ccminer-x64 -a skunk     -o stratum+tcp://eu1.altminer.net:8433                         -u AZ9Z9LuR3GzG1PhJKwWMif2rKZk8WbgdMj -p c=ALTCOM -d 0 --max-temp=72"
+# ALTCOM is being rebranded as SONO
+SONO,Skunkhash,"  .\ccminer224\ccminer-x64 -a skunk     -o stratum+tcp://eu1.altminer.net:8433                         -u AZ9Z9LuR3GzG1PhJKwWMif2rKZk8WbgdMj -p c=SONO -d 0 --max-temp=72"
 
 # suprnova.cc requires an account for each coin you mine; make an account at xvg-lyra.suprnova.cc (kmclaughlin), then create a worker (becquerel) and worker password (poo)
-XVG,Lyra2REv2,".\ccminer224\ccminer-x64   -a lyra2v2   -o stratum+tcp://xvg-lyra.suprnova.cc:2595                     -u kmclaughlin.becquerel -p poo                 -d 0 --max-temp=72"
-MONA,Lyra2REv2,".\ccminer224\ccminer-x64  -a lyra2v2   -o stratum+tcp://mona.suprnova.cc:2995                         -u kmclaughlin.becquerel -p poo                 -d 0 --max-temp=72"
-LBC,LBRY,".\ccminer224\ccminer-x64        -a LBRY      -o stratum+tcp://lbry.suprnova.cc:6256                         -u kmclaughlin.becquerel -p poo                 -d 0 --max-temp=72"
+XVG,Lyra2REv2,"   .\ccminer224\ccminer-x64 -a lyra2v2   -o stratum+tcp://xvg-lyra.suprnova.cc:2595                     -u kmclaughlin.becquerel -p poo                 -d 0 --max-temp=72"
+#MONA,Lyra2REv2,"  .\ccminer224\ccminer-x64 -a lyra2v2   -o stratum+tcp://mona.suprnova.cc:2995                         -u kmclaughlin.becquerel -p poo                 -d 0 --max-temp=72"
+LBC,LBRY,"        .\ccminer224\ccminer-x64 -a LBRY      -o stratum+tcp://lbry.suprnova.cc:6256                         -u kmclaughlin.becquerel -p poo                 -d 0 --max-temp=72"
 
 # miningpoolhub.com requires only one account (kmclaughlin); then you just create a worker (becquerel). If I recall correctly, the password is always "x" for your worker.
 
-FTC,NeoScrypt,".\ccminer224\ccminer-x64  -a neoscrypt -o stratum+tcp://hub.miningpoolhub.com:20510                   -u kmclaughlin.becquerel -p x                   -d 0 --max-temp=72"
-VTC,Lyra2REv2,".\ccminer224\ccminer-x64  -a lyra2v2   -o stratum+tcp://us-east.lyra2z-hub.miningpoolhub.com:20507    -u kmclaughlin.becquerel -p x                   -d 0 --max-temp=72"
-#MONA,Lyra2REv2,".\ccminer224\ccminer-x64  -a lyra2v2   -o stratum+tcp://xvg-lyra.suprnova.cc:2595                     -u kmclaughlin.becquerel -p poo                 -d 0 --max-temp=72"
+FTC,NeoScrypt,"   .\ccminer224\ccminer-x64 -a neoscrypt -o stratum+tcp://hub.miningpoolhub.com:20510                   -u kmclaughlin.becquerel -p x                   -d 0 --max-temp=72"
+VTC,Lyra2REv2,"   .\ccminer224\ccminer-x64 -a lyra2v2   -o stratum+tcp://us-east.lyra2z-hub.miningpoolhub.com:20507    -u kmclaughlin.becquerel -p x                   -d 0 --max-temp=72"
+MONA,Lyra2REv2," .\ccminer224\ccminer-x64 -a lyra2v2   -o stratum+tcp://xvg-lyra.suprnova.cc:2595                     -u kmclaughlin.becquerel -p poo                 -d 0 --max-temp=72"
 BTG,Equihash,".\ewbf_zec_miner_034b\miner.exe  --intensity 64 --templimit 72 --tempunits c --server us-east.equihash-hub.miningpoolhub.com --port 20595  --user kmclaughlin.becquerel -pass x --cuda_devices 0"
 ZEN,Equihash,".\ewbf_zec_miner_034b\miner.exe  --intensity 64 --templimit 72 --tempunits c --server us-east.equihash-hub.miningpoolhub.com --port 20594  --user kmclaughlin.becquerel -pass x --cuda_devices 0"
 ZEC,Equihash,".\ewbf_zec_miner_034b\miner.exe  --intensity 64 --templimit 72 --tempunits c --server us-east.equihash-hub.miningpoolhub.com --port 20570  --user kmclaughlin.becquerel -pass x --cuda_devices 0"
 ZCL,Equihash,".\ewbf_zec_miner_034b\miner.exe  --intensity 64 --templimit 72 --tempunits c --server us-east.equihash-hub.miningpoolhub.com --port 20575  --user kmclaughlin.becquerel -pass x --cuda_devices 0"
-MUSIC,Ethash,".\ethminer0130rc8\ethminer.exe  -G -S  us-east.ethash-hub.miningpoolhub.com:20585 -O kmclaughlin.becquerel:x --cuda-devices 0"
+MUSIC,Ethash,".\ethminer0130\ethminer.exe  -G -S  us-east.ethash-hub.miningpoolhub.com:20585 -O kmclaughlin.becquerel:x --cuda-devices 0"
