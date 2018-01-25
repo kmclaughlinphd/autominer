@@ -13,7 +13,7 @@ I'll put more stuff here later. Getting set up is fairly involved. You need to d
 3) Get your miners set up.  
 I typically use the following miners:  
 Equihash -- ewbf_zec_miner_034b (https://github.com/nanopool/ewbf-miner/releases)  
-Ethash -- open source miner (https://github.com/ethereum-mining/ethminer/releases) -- don't trust Claymore, shit is sketchy AF and closed source.
+Ethash -- open source miner (https://github.com/ethereum-mining/ethminer/releases) -- don't trust Claymore, shit is sketchy AF and closed source.  
 Mostly everything else -- ccminer222 (https://github.com/tpruvot/ccminer/releases)  
 
 4) Configure your minecmd.csv; I provided an example in the repo. You obviously need to provide your own command lines based on your set up. Make sure you type the algos in *exactly* as they appear in the whattomine.com json file (case insensitive), else it will be ignored.
