@@ -6,7 +6,7 @@ looptime = number of seconds before recalculating rewards and switching the mine
 
 I'll put more stuff here later. Getting set up is fairly involved. You need to do the following:
 
-1) Determine your hashrates, via benchmarking or just use whattomine.com defaults; put those values into the mine.py script. If you want to disable a particular algo, enter the hashrate as zero.
+1) Determine your hashrates, via benchmarking or just use whattomine.com defaults; put those values into hashrates.csv. If you want to disable a particular algo, enter the hashrate as zero.
 
 2) Set up wallets/pools. Coinomi and Jaxx support a lot of coins. For the others, you should install the "official" wallet clients, e.g., ZCL, GBX, HAL. For pools, I like altminer.net, miningpoolhub.com, and suprnova.cc; though making accounts on the latter is a pain in the ass.
 
