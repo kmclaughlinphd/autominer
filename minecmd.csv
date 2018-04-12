@@ -27,13 +27,13 @@
 
 # miningpoolhub.com requires only one account (kmclaughlin); then you just create a worker (becquerel). If I recall correctly, the password is always "x" for your worker.
 FTC,NeoScrypt,"     .\ccminer225\ccminer-x64 -a neoscrypt    -o stratum+tcp://hub.miningpoolhub.com:20510                      -u kmclaughlin.becquerel -p x   --max-temp=72"
-#VTC,Lyra2REv2,"    .\ccminer225\ccminer-x64 -a lyra2v2      -o stratum+tcp://us-east.lyra2z-hub.miningpoolhub.com:20507       -u kmclaughlin.becquerel -p x   --max-temp=72"
-#MONA,Lyra2REv2,"   .\ccminer225\ccminer-x64 -a lyra2v2      -o stratum+tcp://hub.miningpoolhub.com:20593                      -u kmclaughlin.becquerel -p x   --max-temp=72"
-#BTG,Equihash,".\ewbf_zec_miner_034b\miner.exe  --intensity 64 --templimit 72 --tempunits c --server us-east.equihash-hub.miningpoolhub.com --port 20595  --user kmclaughlin.becquerel -pass x"
-#ZEN,Equihash,".\ewbf_zec_miner_034b\miner.exe  --intensity 64 --templimit 72 --tempunits c --server us-east.equihash-hub.miningpoolhub.com --port 20594  --user kmclaughlin.becquerel -pass x"
-#ZEC,Equihash,".\ewbf_zec_miner_034b\miner.exe  --intensity 64 --templimit 72 --tempunits c --server us-east.equihash-hub.miningpoolhub.com --port 20570  --user kmclaughlin.becquerel -pass x"
-#ZCL,Equihash,".\ewbf_zec_miner_034b\miner.exe  --intensity 64 --templimit 72 --tempunits c --server us-east.equihash-hub.miningpoolhub.com --port 20575  --user kmclaughlin.becquerel -pass x"
-#MUSIC,Ethash,".\ethminer0130\ethminer.exe  -G -S  us-east.ethash-hub.miningpoolhub.com:20585 -O kmclaughlin.becquerel:x"
+VTC,Lyra2REv2,"    .\ccminer225\ccminer-x64 -a lyra2v2      -o stratum+tcp://us-east.lyra2z-hub.miningpoolhub.com:20507       -u kmclaughlin.becquerel -p x   --max-temp=72"
+MONA,Lyra2REv2,"   .\ccminer225\ccminer-x64 -a lyra2v2      -o stratum+tcp://hub.miningpoolhub.com:20593                      -u kmclaughlin.becquerel -p x   --max-temp=72"
+BTG,Equihash,".\ewbf_zec_miner_034b\miner.exe  --intensity 64 --templimit 72 --tempunits c --server us-east.equihash-hub.miningpoolhub.com --port 20595  --user kmclaughlin.becquerel -pass x"
+ZEN,Equihash,".\ewbf_zec_miner_034b\miner.exe  --intensity 64 --templimit 72 --tempunits c --server us-east.equihash-hub.miningpoolhub.com --port 20594  --user kmclaughlin.becquerel -pass x"
+ZEC,Equihash,".\ewbf_zec_miner_034b\miner.exe  --intensity 64 --templimit 72 --tempunits c --server us-east.equihash-hub.miningpoolhub.com --port 20570  --user kmclaughlin.becquerel -pass x"
+ZCL,Equihash,".\ewbf_zec_miner_034b\miner.exe  --intensity 64 --templimit 72 --tempunits c --server us-east.equihash-hub.miningpoolhub.com --port 20575  --user kmclaughlin.becquerel -pass x"
+MUSIC,Ethash,".\ethminer0130\ethminer.exe  -G -S  us-east.ethash-hub.miningpoolhub.com:20585 -O kmclaughlin.becquerel:x"
 
 # cryptonight7 not yet supported in tpruvot ccminer release, but will be soon...
 #XMR,CryptoNightV7,".\ccminer_XXX\ccminer-x64 -a cryptonight7 -o stratum+tcp://us-east.cryptonight-hub.miningpoolhub.com:20580  -u kmclaughlin.becquerel -p x   --max-temp=72"
