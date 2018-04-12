@@ -1,7 +1,7 @@
 #-------------------------------------------------------------------------------
 # Name:        lets fuckin mine
 # Author:      kirrrbbbyPhD
-# Created:     18/01/2018
+# Created:     2018-01-18
 # Copyright:   (c) kirrrbbbyPhD 2018
 #-------------------------------------------------------------------------------
 
@@ -18,18 +18,20 @@ from threading import Timer
 class algoenum(Enum):
     Ethash = 0
     Groestl = 1
-    MyriadGroestl = 1
+    #MyriadGroestl = 1
     X11Gost = 2
     CryptoNight = 3
     Equihash = 4
     Lyra2REv2 = 5
     NeoScrypt = 6
-    LBRY = 7
-    Blake2b = 8
-    Blake14r = 9
-    Pascal = 10
-    Skunkhash = 11
-    NIST5 = 12
+    #LBRY = 7
+    #Blake2b = 8
+    Blake14r = 7
+    Pascal = 8
+    Skunkhash = 9
+    NIST5 = 10
+    Xevan = 11
+    CryptoNightV7 = 12
 
     DEFAULT = 99
 
@@ -241,7 +243,7 @@ def startMiner(logfile, timeout=600):
 
     # try running scripts here
 
-    for ii in xrange(20):
+    for ii in xrange(len(ranking)):
         if ranking[ii].coinKey() in mineScripts:
             PrintAndLog(logfile, fmtTime() \
                 + ": mining " + ranking[ii].strCoin() \

@@ -1,3 +1,3 @@
-## replace values with your hashrates -- set to zero to disable an algo // I'm using a 1080 TI
-#EthHash Groestl X11Gost CryptoN EquiHsh Lyra2v2 NeoScry LBRY___ Blake2b Blake14 Pascal_ SknkHsh, NIST5
-31.    , 58.   , 19.5  , 830.  , 720.  , 64000., 1415. , 500.  , 2800. , 4350. , 1700. , 47.5    , 0.0
+## replace values with your hashrates -- set to zero to disable an algo // I'm using a 1080 TI + 1080 - dev fees (2% ewbf)
+#EtHash_ Groestl X11Gost CryptoN EquiHsh Lyra2v2 NeoScry Blake14 Pascal_ SknkHsh  NIST5  Xevan  CryptoN7
+55.3,     120.6,   33.0,   2190.,  870., 123000., 2560.,  5910.,  2100.,    95.,  142.,   4.8,   2190.0
